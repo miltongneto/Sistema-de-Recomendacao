@@ -40,12 +40,18 @@ public class ReadMovies {
 	private static Movie parseStringToMovie(String line) {
 		Movie movie = new Movie();
 		String[] info = line.split("\t");
-		String[] genres = info[2].split(",");
+		String[] genres = info[1].split(";");
+		String[] keywords = info[4].split(";");
 		
-		movie.setTitle(info[0]);
-		movie.setYear(Integer.parseInt(info[1]));	
-		movie.setGenre(Arrays.asList(genres));
-		movie.setRate(Double.parseDouble(info[3]));
+		movie.setDirector(info[0]);
+		movie.setGenres(Arrays.asList(genres));
+		movie.setActor(info[2]);
+		movie.setTitle(info[3]);
+		movie.setKeywords(Arrays.asList(keywords));
+		movie.setYear(Integer.parseInt(!info[5].isEmpty() ? info[5] : "0"));
+		movie.setScoreIMDB(Integer.parseInt(info[6]));
+		movie.setLikes((double) Double.parseDouble(info[7]) / 3490);
+		movie.setRanking((movie.getScoreIMDB() * 8 + movie.getLikes()*2)/10);
 		return movie;
 	}
 }
