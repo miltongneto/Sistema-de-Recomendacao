@@ -44,5 +44,4 @@ public enum Genres {
 	public String getName() {
 		return this.name;
 	}
-
 }
