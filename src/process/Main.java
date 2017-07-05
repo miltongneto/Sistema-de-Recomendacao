@@ -23,18 +23,35 @@ public class Main {
 		List<String> preferences = new ArrayList<String>();
 		preferences.add(Genres.ACTION.getName());
 		preferences.add(Genres.ADVENTURE.getName());
-		preferences.add(Genres.COMEDY.getName());
+		preferences.add(Genres.SCI_FI.getName());
 		user.setPreferences(preferences);
 		user.setName("Allan");
 		
 		ReadMovies readMovies = new ReadMovies("filmes.tsv");
 		List<Movie> movies = readMovies.read();
 		Recommendation recommendation = new Recommendation(user, movies);
-
-		System.out.println(movies.size());
-		for(int i = 0; i < Genres.values().length; i++) {
-			System.out.println(Genres.values()[i].getCode() + " - " + Genres.values()[i].getName());
+		recommendation.firstRecommendation();
+		
+		for(int i = 0; i < 30 ; i++) {
+			Movie movie = recommendation.getMovies().get(i);
+			System.out.println(i + " Titulo " + movie.getTitle() + " Ranking " + movie.getRanking() + " Score IMDB " + movie.getScoreIMDB());
 		}
+		System.out.println("-------------------------------------------");
+		List<Movie> moviesLikes = new ArrayList<>();
+		moviesLikes.add(recommendation.getMovies().get(7));
+		moviesLikes.add(recommendation.getMovies().get(11));
+		recommendation.getMovies().remove(7);
+		recommendation.getMovies().remove(11);
+		
+		List<Movie> moviesDislikes = new ArrayList<>();
+		moviesDislikes.add(recommendation.getMovies().get(9));
+		
+		recommendation.recommendationByMovies(moviesLikes, moviesDislikes);
+		for(int i = 0; i < 30 ; i++) {
+			Movie movie = recommendation.getMovies().get(i);
+			System.out.println(i + " Titulo " + movie.getTitle() + " Ranking " + movie.getRanking() + " Score IMDB " + movie.getScoreIMDB());
+		}
+
 	}
 	
 }
